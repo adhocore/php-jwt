@@ -1,0 +1,19 @@
+sudo: required
+
+cache:
+  directories:
+  - $HOME/.composer/cache
+
+git:
+  depth: 1
+
+language: php
+php:
+  - 7.0
+  - 7.1
+
+install:
+  - composer install --prefer-dist
+
+script:
+  - vendor/bin/phpunit --coverage-text
