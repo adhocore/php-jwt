@@ -14,6 +14,17 @@ use Ahc\Jwt\JWT;
 // Instantiate with key, algo, maxAge and leeway.
 $jwt = new JWT('secret', 'HS256', 3600, 10);
 
+// Only the key is required. Defaults will be used for the rest:
+// algo = HS256, maxAge = 3600, leeway = 0
+$jwt = new JWT('secret');
+
+// For RS* algo, the key should be either a resource like below:
+$key = openssl_pkey_new(['digest_alg' => 'sha256', 'private_key_bits' => 1024, 'private_key_type' => OPENSSL_KEYTYPE_RSA]);
+// OR, a string with full path to the RSA private key like below:
+$key = '/path/to/rsa.key';
+// Then, instantiate JWT with this key and RS* as algo:
+$jwt = new JWT($key, 'RS384');
+
 // Generate JWT token from payload array.
 $token = $jwt->generate([
     'uid'    => 1,
@@ -45,3 +56,13 @@ $token = $jwt->encode($payload);
 $jwt->decode($token);
 
 ```
+
+## Features
+
+- Six algorithms supported:
+```
+'HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512'
+```
+- Leeway support 0-120 seconds.
+- Timestamp spoofing for tests.
+- Passphrase support for `RS*` algos.

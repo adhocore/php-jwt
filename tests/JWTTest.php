@@ -7,12 +7,15 @@ use Ahc\Jwt\JWT;
 /** @coversDefaultClass \Ahc\Jwt\JWT */
 class JWTTest extends \PHPUnit_Framework_TestCase
 {
-    /** @dataProvider data */
+    /** @dataProvider data1 */
     public function test_parse_generated_token(string $key, string $algo, int $age, int $leeway, array $payload, array $header = [])
     {
-        $jwt    = new JWT($key, $algo, $age, $leeway);
-        $token  = $jwt->generate($payload, $header);
+        $jwt   = new JWT($key, $algo, $age, $leeway);
+        $token = $jwt->generate($payload, $header);
+
+        $this->assertTrue(is_string($token));
         $parsed = $jwt->parse($token);
+        $this->assertTrue(is_array($parsed));
 
         // Normalize.
         if (!isset($payload['exp'])) {
@@ -31,7 +34,7 @@ class JWTTest extends \PHPUnit_Framework_TestCase
         try {
             $jwt->generate([random_bytes(10)]);
         } catch (\Exception $e) {
-            $this->assertSame($e->getCode(), JWT::ERROR_JSON_FAILED);
+            $this->assertSame($e->getCode(), JWT::ERROR_JSON_FAILED, $e->getMessage());
 
             throw $e;
         }
@@ -52,13 +55,48 @@ class JWTTest extends \PHPUnit_Framework_TestCase
         try {
             $jwt->parse($token);
         } catch (\Exception $e) {
-            $this->assertSame($e->getCode(), $error);
+            $this->assertSame($e->getCode(), $error, $e->getMessage());
 
             throw $e;
         }
     }
 
-    public function data() : array
+    /** @dataProvider data1 */
+    public function test_rs_parse_generated(string $key, string $algo, int $age, int $leeway, array $payload, array $header = [])
+    {
+        $key   = __DIR__ . '/stubs/priv.key';
+        $jwt   = new JWT($key, str_replace('HS', 'RS', $algo), $age, $leeway);
+        $token = $jwt->encode($payload, $header);
+
+        $this->assertTrue(is_string($token));
+        $parsed = $jwt->decode($token);
+        $this->assertTrue(is_array($parsed));
+
+        // Normalize.
+        if (!isset($payload['exp'])) {
+            unset($parsed['exp']);
+        }
+
+        $this->assertSame($payload, $parsed);
+    }
+
+    /** @dataProvider data3 */
+    public function test_rs_invalid_key(string $method, string $key, $arg)
+    {
+        $this->setExpectedException(\InvalidArgumentException::class);
+
+        $jwt = new JWT($key, 'RS256');
+
+        try {
+            $jwt->{$method}($arg);
+        } catch (\Exception $e) {
+            $this->assertSame($e->getCode(), JWT::ERROR_KEY_INVALID, $e->getMessage());
+
+            throw $e;
+        }
+    }
+
+    public function data1() : array
     {
         return [
             ['secret', 'HS256', rand(10, 1000), rand(1, 10), [
@@ -134,6 +172,16 @@ class JWTTest extends \PHPUnit_Framework_TestCase
             ['NN=KK(*({:BJ', 'HS512',  10,  0,  -20,  JWT::ERROR_TOKEN_NOT_NOW, [
                 'nbf' => time() - 10,
             ]],
+        ];
+    }
+
+    public function data3()
+    {
+        return [
+            ['encode', 'not a file', ['uid' => rand()]],
+            ['generate', __FILE__, ['uid' => rand()]],
+            ['decode', 'not a file', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJuYmYiOjE0OTIwODkxODksImV4cCI6MTQ5MjA4OTE4OX0.fakesignature'],
+            ['parse', __FILE__, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJuYmYiOjE0OTIwODkxODksImV4cCI6MTQ5MjA4OTE4OX0.fakesignature'],
         ];
     }
 }
