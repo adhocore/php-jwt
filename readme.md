@@ -1,4 +1,4 @@
-## adhcore/jwt [![build status](https://travis-ci.org/adhocore/jwt.svg?branch=master)](https://travis-ci.org/adhocore/jwt)
+## adhocore/jwt [![build status](https://travis-ci.org/adhocore/jwt.svg?branch=master)](https://travis-ci.org/adhocore/jwt)
 
 - Lightweight JSON Web Token (JWT) library for PHP7.
 
