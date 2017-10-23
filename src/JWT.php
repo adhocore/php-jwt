@@ -17,6 +17,7 @@ class JWT
     const ERROR_ALGO_UNSUPPORTED = 20;
     const ERROR_ALGO_MISSING     = 22;
     const ERROR_INVALID_MAXAGE   = 30;
+    const ERROR_INVALID_LEEWAY   = 32;
     const ERROR_JSON_FAILED      = 40;
     const ERROR_TOKEN_INVALID    = 50;
     const ERROR_TOKEN_EXPIRED    = 52;
@@ -40,7 +41,7 @@ class JWT
     /**
      * The signature key.
      *
-     * @var string
+     * @var string|resource
      */
     protected $key;
 
@@ -325,7 +326,7 @@ class JWT
      * @param  array|string  $data
      * @param  bool          $asJson  Whether to parse as JSON (defaults to true).
      *
-     * @return array|\stdClass
+     * @return array|\stdClass|string
      *
      * @throws \InvalidArgumentException When JSON encode fails.
      */
