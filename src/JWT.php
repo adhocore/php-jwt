@@ -349,18 +349,10 @@ class JWT
      */
     protected function throwIfJsonError()
     {
-        if (JSON_ERROR_NONE === $error = json_last_error()) {
+        if (JSON_ERROR_NONE === json_last_error()) {
             return;
         }
 
-        $errorMessage = [
-            JSON_ERROR_STATE_MISMATCH => 'Underflow or the modes mismatch',
-            JSON_ERROR_SYNTAX => 'Syntax error, malformed JSON',
-            JSON_ERROR_DEPTH => 'Maximum stack depth exceeded',
-            JSON_ERROR_CTRL_CHAR => 'Unexpected control character found',
-            JSON_ERROR_UTF8 => 'Malformed UTF-8 characters, possibly incorrectly encoded',
-        ][$error] ?? 'Unknown error';
-
-        throw new \InvalidArgumentException('JSON failed: ' . $errorMessage, static::ERROR_JSON_FAILED);
+        throw new \InvalidArgumentException('JSON failed: ' . json_last_error_msg(), static::ERROR_JSON_FAILED);
     }
 }
