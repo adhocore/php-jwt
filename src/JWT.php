@@ -171,7 +171,7 @@ class JWT
         $header = ['typ' => 'JWT', 'alg' => $this->algo] + $header;
 
         if (!isset($payload['iat']) && !isset($payload['exp'])) {
-            $payload['exp'] = ($this->timestamp ?? time()) + $this->maxAge;
+            $payload['exp'] = ($this->timestamp ?? \time()) + $this->maxAge;
         }
 
         $header    = $this->urlSafeEncode($header);
@@ -192,11 +192,11 @@ class JWT
      */
     public function parse(string $token) : array
     {
-        if (substr_count($token, '.') < 2) {
+        if (\substr_count($token, '.') < 2) {
             throw new \InvalidArgumentException('Invalid token: Incomplete segments', static::ERROR_TOKEN_INVALID);
         }
 
-        $token  = explode('.', $token, 3);
+        $token  = \explode('.', $token, 3);
         $header = $this->urlSafeDecode($token[0]);
 
         // Validate header.
@@ -215,7 +215,7 @@ class JWT
         $payload = $this->urlSafeDecode($token[1]);
 
         // Validate expiry.
-        $timestamp = $this->timestamp ?? time();
+        $timestamp = $this->timestamp ?? \time();
         if (isset($payload->exp) && $timestamp >= ($payload->exp + $this->leeway)) {
             throw new \InvalidArgumentException('Invalid token: Expired', static::ERROR_TOKEN_EXPIRED);
         }
@@ -242,13 +242,13 @@ class JWT
     protected function sign(string $input) : string
     {
         // HMAC SHA.
-        if (substr($this->algo, 0, 2) === 'HS') {
-            return hash_hmac($this->algos[$this->algo], $input, $this->key, true);
+        if (\substr($this->algo, 0, 2) === 'HS') {
+            return \hash_hmac($this->algos[$this->algo], $input, $this->key, true);
         }
 
         $this->throwIfKeyInvalid();
 
-        openssl_sign($input, $signature, $this->key, $this->algos[$this->algo]);
+        \openssl_sign($input, $signature, $this->key, $this->algos[$this->algo]);
 
         return $signature;
     }
@@ -268,15 +268,15 @@ class JWT
         $algo = $this->algos[$this->algo];
 
         // HMAC SHA.
-        if (substr($this->algo, 0, 2) === 'HS') {
-            return hash_equals($this->urlSafeEncode(hash_hmac($algo, $input, $this->key, true)), $signature);
+        if (\substr($this->algo, 0, 2) === 'HS') {
+            return \hash_equals($this->urlSafeEncode(\hash_hmac($algo, $input, $this->key, true)), $signature);
         }
 
         $this->throwIfKeyInvalid();
 
-        $pubKey = openssl_pkey_get_details($this->key)['key'];
+        $pubKey = \openssl_pkey_get_details($this->key)['key'];
 
-        return openssl_verify($input, $this->urlSafeDecode($signature, false), $pubKey, $algo) === 1;
+        return \openssl_verify($input, $this->urlSafeDecode($signature, false), $pubKey, $algo) === 1;
     }
 
     /**
@@ -286,15 +286,15 @@ class JWT
      */
     protected function throwIfKeyInvalid()
     {
-        if (is_string($this->key)) {
-            if (!is_file($this->key)) {
+        if (\is_string($this->key)) {
+            if (!\is_file($this->key)) {
                 throw new \InvalidArgumentException('Invalid key: Should be file path of private key', static::ERROR_KEY_INVALID);
             }
 
-            $this->key = openssl_get_privatekey('file://' . $this->key, $this->passphrase ?? '');
+            $this->key = \openssl_get_privatekey('file://' . $this->key, $this->passphrase ?? '');
         }
 
-        if (!is_resource($this->key)) {
+        if (!\is_resource($this->key)) {
             throw new \InvalidArgumentException('Invalid key: Should be resource of private key', static::ERROR_KEY_INVALID);
         }
     }
@@ -312,12 +312,12 @@ class JWT
      */
     protected function urlSafeEncode($data) : string
     {
-        if (is_array($data)) {
-            $data = json_encode($data, JSON_UNESCAPED_SLASHES);
+        if (\is_array($data)) {
+            $data = \json_encode($data, JSON_UNESCAPED_SLASHES);
             $this->throwIfJsonError();
         }
 
-        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+        return \rtrim(\strtr(\base64_encode($data), '+/', '-_'), '=');
     }
 
     /**
@@ -333,10 +333,10 @@ class JWT
     protected function urlSafeDecode(string $data, bool $asJson = true)
     {
         if (!$asJson) {
-            return base64_decode(strtr($data, '-_', '+/'));
+            return \base64_decode(\strtr($data, '-_', '+/'));
         }
 
-        $data = json_decode(base64_decode(strtr($data, '-_', '+/')));
+        $data = \json_decode(\base64_decode(\strtr($data, '-_', '+/')));
         $this->throwIfJsonError();
 
         return $data;
@@ -349,10 +349,10 @@ class JWT
      */
     protected function throwIfJsonError()
     {
-        if (JSON_ERROR_NONE === json_last_error()) {
+        if (JSON_ERROR_NONE === \json_last_error()) {
             return;
         }
 
-        throw new \InvalidArgumentException('JSON failed: ' . json_last_error_msg(), static::ERROR_JSON_FAILED);
+        throw new \InvalidArgumentException('JSON failed: ' . \json_last_error_msg(), static::ERROR_JSON_FAILED);
     }
 }
