@@ -214,6 +214,22 @@ class JWT
 
         $payload = $this->urlSafeDecode($token[1]);
 
+        $this->validateTimestamps($payload);
+
+        return (array) $payload;
+    }
+
+    /**
+     * Validate timestamp claims like iat, exp, nbf.
+     *
+     * @param  \stdClass $payload
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException When JWT token is expired or unacceptable now.
+     */
+    protected function validateTimestamps(\stdClass $payload)
+    {
         // Validate expiry.
         $timestamp = $this->timestamp ?? \time();
         if (isset($payload->exp) && $timestamp >= ($payload->exp + $this->leeway)) {
@@ -228,8 +244,6 @@ class JWT
         if (isset($payload->nbf) && $timestamp <= ($payload->nbf - $this->leeway)) {
             throw new \InvalidArgumentException('Invalid token: Cannot accept now', static::ERROR_TOKEN_NOT_NOW);
         }
-
-        return (array) $payload;
     }
 
     /**
