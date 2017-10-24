@@ -100,16 +100,16 @@ class JWTTest extends \PHPUnit_Framework_TestCase
     {
         return [
             ['secret', 'HS256', rand(10, 1000), rand(1, 10), [
-                'uid' => rand(),
+                'uid'    => rand(),
                 'scopes' => ['user'],
-                'msg' => 'fdsfdsf',
-                'iss' => 'https://mysite.com',
+                'msg'    => 'fdsfdsf',
+                'iss'    => 'https://mysite.com',
             ]],
             ['$ecRet-$ecRet', 'HS384', rand(10, 1000), rand(1, 10), [
-                'uid' => rand(),
+                'uid'    => rand(),
                 'scopes' => ['admin'],
-                'exp' => time() + 100,
-                'iss' => 'https://my.site.com',
+                'exp'    => time() + 100,
+                'iss'    => 'https://my.site.com',
             ]],
             ['s3cr3t.s3cr3t', 'HS512', rand(10, 1000), rand(1, 10), [
                 'uid' => rand(),
