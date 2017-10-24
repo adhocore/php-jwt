@@ -48,7 +48,7 @@ class JWT
     /**
      * Use setTestTimestamp() to set custom value for time(). Useful for testability.
      *
-     * @var integer|null
+     * @var int|null
      */
     protected $timestamp = null;
 
@@ -62,14 +62,14 @@ class JWT
     /**
      * The JWT TTL in seconds. Defaults to 1 hour.
      *
-     * @var integer
+     * @var int
      */
     protected $maxAge = 3600;
 
     /**
      * Grace period in seconds to allow for clock skew. Defaults to 0 seconds.
      *
-     * @var integer
+     * @var int
      */
     protected $leeway = 0;
 
@@ -85,9 +85,9 @@ class JWT
      *
      * @param string|resource $key    The signature key. For RS* it should be file path or resource of private key.
      * @param string          $algo   The algorithm to sign/verify the token.
-     * @param integer         $maxAge The TTL of token to be used to determine expiry if `iat` claim is present.
+     * @param int             $maxAge The TTL of token to be used to determine expiry if `iat` claim is present.
      *                                This is also used to provide default `exp` claim in case it is missing.
-     * @param integer         $leeway Leeway for clock skew. Shouldnot be more than 2 minutes (120s).
+     * @param int             $leeway Leeway for clock skew. Shouldnot be more than 2 minutes (120s).
      * @param string          $pass   The passphrase (only for RS* algos).
      */
     public function __construct($key, string $algo = 'HS256', int $maxAge = 3600, int $leeway = 0, string $pass = null)
@@ -122,10 +122,10 @@ class JWT
      *
      * This method is alias of self::generate().
      *
-     * @param  array  $payload
-     * @param  array  $header  Extra header (if any) to append.
+     * @param array $payload
+     * @param array $header  Extra header (if any) to append.
      *
-     * @return string          URL safe JWT token.
+     * @return string URL safe JWT token.
      */
     public function encode(array $payload, array $header = []) : string
     {
@@ -137,7 +137,7 @@ class JWT
      *
      * This method is alias of self::parse().
      *
-     * @param  string $token
+     * @param string $token
      *
      * @return array
      */
@@ -149,7 +149,7 @@ class JWT
     /**
      * Spoof current timestamp for testing.
      *
-     * @param integer|null $timestamp
+     * @param int|null $timestamp
      */
     public function setTestTimestamp(int $timestamp = null) : JWT
     {
@@ -161,10 +161,10 @@ class JWT
     /**
      * Generate JWT token.
      *
-     * @param  array  $payload
-     * @param  array  $header  Extra header (if any) to append.
+     * @param array $payload
+     * @param array $header  Extra header (if any) to append.
      *
-     * @return string          URL safe JWT token.
+     * @return string URL safe JWT token.
      */
     public function generate(array $payload, array $header = []) : string
     {
@@ -184,11 +184,11 @@ class JWT
     /**
      * Parse JWT token and return original payload.
      *
-     * @param  string $token
-     *
-     * @return array
+     * @param string $token
      *
      * @throws \InvalidArgumentException When JWT token is invalid or expired or signature can't be verified.
+     *
+     * @return array
      */
     public function parse(string $token) : array
     {
@@ -222,11 +222,11 @@ class JWT
     /**
      * Validate timestamp claims like iat, exp, nbf.
      *
-     * @param  \stdClass $payload
-     *
-     * @return void
+     * @param \stdClass $payload
      *
      * @throws \InvalidArgumentException When JWT token is expired or unacceptable now.
+     *
+     * @return void
      */
     protected function validateTimestamps(\stdClass $payload)
     {
@@ -249,7 +249,7 @@ class JWT
     /**
      * Sign the input with configured key and return the signature.
      *
-     * @param  string $input
+     * @param string $input
      *
      * @return string
      */
@@ -270,12 +270,12 @@ class JWT
     /**
      * Verify the signature of given input.
      *
-     * @param  string $input
-     * @param  string $signature
-     *
-     * @return bool
+     * @param string $input
+     * @param string $signature
      *
      * @throws \InvalidArgumentException When key is invalid.
+     *
+     * @return bool
      */
     protected function verify(string $input, string $signature) : bool
     {
@@ -318,11 +318,11 @@ class JWT
      *
      * First serialized the payload as json if it is an array.
      *
-     * @param  array|string $data
-     *
-     * @return string
+     * @param array|string $data
      *
      * @throws \InvalidArgumentException When JSON encode fails.
+     *
+     * @return string
      */
     protected function urlSafeEncode($data) : string
     {
@@ -337,12 +337,12 @@ class JWT
     /**
      * URL safe base64 decode.
      *
-     * @param  array|string  $data
-     * @param  bool          $asJson  Whether to parse as JSON (defaults to true).
-     *
-     * @return array|\stdClass|string
+     * @param array|string $data
+     * @param bool         $asJson Whether to parse as JSON (defaults to true).
      *
      * @throws \InvalidArgumentException When JSON encode fails.
+     *
+     * @return array|\stdClass|string
      */
     protected function urlSafeDecode(string $data, bool $asJson = true)
     {
