@@ -1,4 +1,12 @@
-## adhocore/jwt [![build status](https://travis-ci.org/adhocore/jwt.svg?branch=master)](https://travis-ci.org/adhocore/jwt)
+## adhocore/jwt
+
+[![Latest Version](https://img.shields.io/github/release/adhocore/jwt.svg?style=flat-square)](https://github.com/adhocore/jwt/releases)
+[![Travis Build](https://img.shields.io/travis/adhocore/jwt/master.svg?style=flat-square)](https://travis-ci.org/adhocore/jwt?branch=master)
+[![Scrutinizer CI](https://img.shields.io/scrutinizer/g/adhocore/jwt.svg?style=flat-square)](https://scrutinizer-ci.com/g/adhocore/jwt/?branch=master)
+[![Codecov branch](https://img.shields.io/codecov/c/github/adhocore/jwt/master.svg?style=flat-square)](https://codecov.io/gh/adhocore/jwt)
+[![StyleCI](https://styleci.io/repos/88168137/shield)](https://styleci.io/repos/88168137)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+
 
 - Lightweight JSON Web Token (JWT) library for PHP7.
 
