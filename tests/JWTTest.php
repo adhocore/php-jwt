@@ -5,34 +5,34 @@ namespace Ahc\Jwt\Test;
 use Ahc\Jwt\JWT;
 
 /** @coversDefaultClass \Ahc\Jwt\JWT */
-class JWTTest extends \PHPUnit_Framework_TestCase
+class JWTTest extends \PHPUnit\Framework\TestCase
 {
     /** @dataProvider data1 */
-    public function test_parse_generated_token(string $key, string $algo, int $age, int $leeway, array $payload, array $header = [])
+    public function test_decode_encoded_token(string $key, string $algo, int $age, int $leeway, array $payload, array $header = [])
     {
         $jwt   = new JWT($key, $algo, $age, $leeway);
-        $token = $jwt->generate($payload, $header);
+        $token = $jwt->encode($payload, $header);
 
         $this->assertTrue(is_string($token));
-        $parsed = $jwt->parse($token);
-        $this->assertTrue(is_array($parsed));
+        $decoded = $jwt->decode($token);
+        $this->assertTrue(is_array($decoded));
 
         // Normalize.
         if (!isset($payload['exp'])) {
-            unset($parsed['exp']);
+            unset($decoded['exp']);
         }
 
-        $this->assertSame($payload, $parsed);
+        $this->assertSame($payload, $decoded);
     }
 
     public function test_json_fail()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $jwt = new JWT('very^secre7');
 
         try {
-            $jwt->generate([random_bytes(10)]);
+            $jwt->encode([random_bytes(10)]);
         } catch (\Exception $e) {
             $this->assertSame($e->getCode(), JWT::ERROR_JSON_FAILED, $e->getMessage());
 
@@ -41,19 +41,19 @@ class JWTTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @dataProvider data2 */
-    public function test_parse_fail(string $key, string $algo, int $age, int $leeway, int $offset, int $error, $token)
+    public function test_decode_fail(string $key, string $algo, int $age, int $leeway, int $offset, int $error, $token)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $jwt   = new JWT($key, $algo, $age, $leeway);
-        $token = is_string($token) ? $token : $jwt->generate($token);
+        $token = is_string($token) ? $token : $jwt->encode($token);
 
         if ($offset) {
             $jwt->setTestTimestamp(time() + $offset);
         }
 
         try {
-            $jwt->parse($token);
+            $jwt->decode($token);
         } catch (\Exception $e) {
             $this->assertSame($e->getCode(), $error, $e->getMessage());
 
@@ -62,28 +62,28 @@ class JWTTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @dataProvider data1 */
-    public function test_rs_parse_generated(string $key, string $algo, int $age, int $leeway, array $payload, array $header = [])
+    public function test_rs_decode_encoded(string $key, string $algo, int $age, int $leeway, array $payload, array $header = [])
     {
         $key   = __DIR__ . '/stubs/priv.key';
         $jwt   = new JWT($key, str_replace('HS', 'RS', $algo), $age, $leeway);
         $token = $jwt->encode($payload, $header);
 
         $this->assertTrue(is_string($token));
-        $parsed = $jwt->decode($token);
-        $this->assertTrue(is_array($parsed));
+        $decoded = $jwt->decode($token);
+        $this->assertTrue(is_array($decoded));
 
         // Normalize.
         if (!isset($payload['exp'])) {
-            unset($parsed['exp']);
+            unset($decoded['exp']);
         }
 
-        $this->assertSame($payload, $parsed);
+        $this->assertSame($payload, $decoded);
     }
 
     /** @dataProvider data3 */
     public function test_rs_invalid_key(string $method, string $key, $arg)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $jwt = new JWT($key, 'RS256');
 
@@ -179,9 +179,9 @@ class JWTTest extends \PHPUnit_Framework_TestCase
     {
         return [
             ['encode', 'not a file', ['uid' => rand()]],
-            ['generate', __FILE__, ['uid' => rand()]],
+            ['encode', __FILE__, ['uid' => rand()]],
             ['decode', 'not a file', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJuYmYiOjE0OTIwODkxODksImV4cCI6MTQ5MjA4OTE4OX0.fakesignature'],
-            ['parse', __FILE__, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJuYmYiOjE0OTIwODkxODksImV4cCI6MTQ5MjA4OTE4OX0.fakesignature'],
+            ['decode', __FILE__, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJuYmYiOjE0OTIwODkxODksImV4cCI6MTQ5MjA4OTE4OX0.fakesignature'],
         ];
     }
 }
