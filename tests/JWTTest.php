@@ -129,7 +129,7 @@ class JWTTest extends \PHPUnit\Framework\TestCase
                 'msg'    => 'fdsfdsf',
                 'iss'    => 'https://mysite.com',
             ]],
-            ['$ecRet-$ecRet', 'HS384', rand(10, 1000), rand(1, 10), [
+            ['$ecRet-$ecRet', 'HS384', rand(101, 1000), rand(1, 10), [
                 'uid'    => rand(),
                 'scopes' => ['admin'],
                 'exp'    => time() + 100,
