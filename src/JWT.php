@@ -68,7 +68,7 @@ class JWT
      * @param int             $leeway Leeway for clock skew. Shouldnot be more than 2 minutes (120s).
      * @param string          $pass   The passphrase (only for RS* algos).
      */
-    public function __construct($key, string $algo = 'HS256', int $maxAge = 3600, int $leeway = 0, ?string $pass = null)
+    public function __construct($key, string $algo = 'HS256', int $maxAge = 3600, int $leeway = 0, string $pass = null)
     {
         $this->validateConfig($key, $algo, $maxAge, $leeway);
 
