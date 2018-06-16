@@ -71,8 +71,8 @@ class JWT
         $this->validate($key, $algo, $maxAge, $leeway);
 
         if (\is_array($key)) {
-            $this->keys = $key;
-            $key        = reset($key); // use first one!
+            $this->registerKeys($key);
+            $key = reset($key); // use first one!
         }
 
         $this->key        = $key;
@@ -298,7 +298,6 @@ class JWT
         if (!isset($header['kid'])) {
             return;
         }
-
         if (empty($this->keys[$header['kid']])) {
             throw new \InvalidArgumentException('Invalid token: Unknown key ID', static::ERROR_KID_UNKNOWN);
         }
