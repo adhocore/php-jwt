@@ -96,6 +96,30 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         }
     }
 
+    public function test_kid()
+    {
+        $jwt = (new JWT('dummy', 'HS256'))->registerKeys(['key1' => 'secret1', 'key2' => 'secret2']);
+
+        // Use key2
+        $token = $jwt->encode($payload = ['a' => 1, 'exp' => time() + 1000], ['kid' => 'key2']);
+
+        $this->assertSame($payload, $jwt->decode($token));
+
+        return $jwt;
+    }
+
+    public function test_kid_invalid()
+    {
+        // keys can be sent as array too
+        $jwt = new JWT(['key1' => 'secret1', 'key2' => 'secret2'], 'HS256');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid token: Unknown key ID');
+
+        // Use key3
+        $jwt->encode(['a' => 1, 'exp' => time() + 1000], ['kid' => 'key3']);
+    }
+
     public function data1() : array
     {
         return [
