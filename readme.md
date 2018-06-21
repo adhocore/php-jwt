@@ -34,7 +34,7 @@ $key = '/path/to/rsa.key';
 $jwt = new JWT($key, 'RS384');
 
 // Generate JWT token from payload array.
-$token = $jwt->generate([
+$token = $jwt->encode([
     'uid'    => 1,
     'aud'    => 'http://site.com',
     'scopes' => ['user'],
@@ -42,14 +42,14 @@ $token = $jwt->generate([
 ]);
 
 // Retrieve the payload array.
-$payload = $jwt->parse($token);
+$payload = $jwt->decode($token);
 
 // Oneliner.
-$token   = (new JWT('topSecret', 'HS512', 1800))->generate(['uid' => 1, 'scopes' => ['user']]));
-$payload = (new JWT('topSecret', 'HS512', 1800))->parse($token);
+$token   = (new JWT('topSecret', 'HS512', 1800))->encode(['uid' => 1, 'scopes' => ['user']]));
+$payload = (new JWT('topSecret', 'HS512', 1800))->decode($token);
 
-// Can pass extra headers into generate() with second parameter.
-$token = $jwt->generate($payload, ['hdr' => 'hdr_value']);
+// Can pass extra headers into encode() with second parameter.
+$token = $jwt->encode($payload, ['hdr' => 'hdr_value']);
 
 // Spoof time() for testing token expiry.
 $jwt->setTestTimestamp(time() + 10000);
@@ -58,10 +58,6 @@ $jwt->parse($token);
 
 // Call again without parameter to stop spoofing time().
 $jwt->setTestTimestamp();
-
-// Can use encode() instead of generate() and decode() instead of parse().
-$token = $jwt->encode($payload);
-$jwt->decode($token);
 
 ```
 
