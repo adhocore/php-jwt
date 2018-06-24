@@ -20,19 +20,19 @@ trait ValidatesJWT
     protected function validateConfig($key, string $algo, int $maxAge, int $leeway)
     {
         if (empty($key)) {
-            throw new \InvalidArgumentException('Signing key cannot be empty', static::ERROR_KEY_EMPTY);
+            throw new JWTException('Signing key cannot be empty', static::ERROR_KEY_EMPTY);
         }
 
         if (!isset($this->algos[$algo])) {
-            throw new \InvalidArgumentException('Unsupported algo ' . $algo, static::ERROR_ALGO_UNSUPPORTED);
+            throw new JWTException('Unsupported algo ' . $algo, static::ERROR_ALGO_UNSUPPORTED);
         }
 
         if ($maxAge < 1) {
-            throw new \InvalidArgumentException('Invalid maxAge: Should be greater than 0', static::ERROR_INVALID_MAXAGE);
+            throw new JWTException('Invalid maxAge: Should be greater than 0', static::ERROR_INVALID_MAXAGE);
         }
 
         if ($leeway < 0 || $leeway > 120) {
-            throw new \InvalidArgumentException('Invalid leeway: Should be between 0-120', static::ERROR_INVALID_LEEWAY);
+            throw new JWTException('Invalid leeway: Should be between 0-120', static::ERROR_INVALID_LEEWAY);
         }
     }
 
@@ -42,10 +42,10 @@ trait ValidatesJWT
     protected function validateHeader(array $header)
     {
         if (empty($header['alg'])) {
-            throw new \InvalidArgumentException('Invalid token: Missing header algo', static::ERROR_ALGO_MISSING);
+            throw new JWTException('Invalid token: Missing header algo', static::ERROR_ALGO_MISSING);
         }
         if (empty($this->algos[$header['alg']])) {
-            throw new \InvalidArgumentException('Invalid token: Unsupported header algo', static::ERROR_ALGO_UNSUPPORTED);
+            throw new JWTException('Invalid token: Unsupported header algo', static::ERROR_ALGO_UNSUPPORTED);
         }
 
         $this->validateKid($header);
@@ -60,7 +60,7 @@ trait ValidatesJWT
             return;
         }
         if (empty($this->keys[$header['kid']])) {
-            throw new \InvalidArgumentException('Invalid token: Unknown key ID', static::ERROR_KID_UNKNOWN);
+            throw new JWTException('Invalid token: Unknown key ID', static::ERROR_KID_UNKNOWN);
         }
 
         $this->key = $this->keys[$header['kid']];
@@ -73,15 +73,15 @@ trait ValidatesJWT
     {
         $timestamp = $this->timestamp ?? \time();
         if (isset($payload['exp']) && $timestamp >= ($payload['exp'] + $this->leeway)) {
-            throw new \InvalidArgumentException('Invalid token: Expired', static::ERROR_TOKEN_EXPIRED);
+            throw new JWTException('Invalid token: Expired', static::ERROR_TOKEN_EXPIRED);
         }
 
         if (isset($payload['iat']) && $timestamp >= ($payload['iat'] + $this->maxAge - $this->leeway)) {
-            throw new \InvalidArgumentException('Invalid token: Expired', static::ERROR_TOKEN_EXPIRED);
+            throw new JWTException('Invalid token: Expired', static::ERROR_TOKEN_EXPIRED);
         }
 
         if (isset($payload['nbf']) && $timestamp <= ($payload['nbf'] - $this->leeway)) {
-            throw new \InvalidArgumentException('Invalid token: Cannot accept now', static::ERROR_TOKEN_NOT_NOW);
+            throw new JWTException('Invalid token: Cannot accept now', static::ERROR_TOKEN_NOT_NOW);
         }
     }
 
@@ -92,14 +92,14 @@ trait ValidatesJWT
     {
         if (\is_string($this->key)) {
             if (!\is_file($this->key)) {
-                throw new \InvalidArgumentException('Invalid key: Should be file path of private key', static::ERROR_KEY_INVALID);
+                throw new JWTException('Invalid key: Should be file path of private key', static::ERROR_KEY_INVALID);
             }
 
             $this->key = \openssl_get_privatekey('file://' . $this->key, $this->passphrase ?? '');
         }
 
         if (!\is_resource($this->key)) {
-            throw new \InvalidArgumentException('Invalid key: Should be resource of private key', static::ERROR_KEY_INVALID);
+            throw new JWTException('Invalid key: Should be resource of private key', static::ERROR_KEY_INVALID);
         }
     }
 
@@ -112,6 +112,6 @@ trait ValidatesJWT
             return;
         }
 
-        throw new \InvalidArgumentException('JSON failed: ' . \json_last_error_msg(), static::ERROR_JSON_FAILED);
+        throw new JWTException('JSON failed: ' . \json_last_error_msg(), static::ERROR_JSON_FAILED);
     }
 }
