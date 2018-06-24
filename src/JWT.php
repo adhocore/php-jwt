@@ -133,7 +133,7 @@ class JWT
     public function decode(string $token) : array
     {
         if (\substr_count($token, '.') < 2) {
-            throw new \InvalidArgumentException('Invalid token: Incomplete segments', static::ERROR_TOKEN_INVALID);
+            throw new JWTException('Invalid token: Incomplete segments', static::ERROR_TOKEN_INVALID);
         }
 
         $token = \explode('.', $token, 3);
@@ -141,7 +141,7 @@ class JWT
 
         // Validate signature.
         if (!$this->verify($token[0] . '.' . $token[1], $token[2])) {
-            throw new \InvalidArgumentException('Invalid token: Signature failed', static::ERROR_SIGNATURE_FAILED);
+            throw new JWTException('Invalid token: Signature failed', static::ERROR_SIGNATURE_FAILED);
         }
 
         $payload = (array) $this->urlSafeDecode($token[1]);
@@ -190,7 +190,7 @@ class JWT
      * @param string $input
      * @param string $signature
      *
-     * @throws \InvalidArgumentException When key is invalid.
+     * @throws JWTException When key is invalid.
      *
      * @return bool
      */
@@ -217,7 +217,7 @@ class JWT
      *
      * @param array|string $data
      *
-     * @throws \InvalidArgumentException When JSON encode fails.
+     * @throws JWTException When JSON encode fails.
      *
      * @return string
      */
@@ -237,7 +237,7 @@ class JWT
      * @param array|string $data
      * @param bool         $asJson Whether to parse as JSON (defaults to true).
      *
-     * @throws \InvalidArgumentException When JSON encode fails.
+     * @throws JWTException When JSON encode fails.
      *
      * @return array|\stdClass|string
      */
