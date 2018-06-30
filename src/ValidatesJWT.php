@@ -72,16 +72,21 @@ trait ValidatesJWT
     protected function validateTimestamps(array $payload)
     {
         $timestamp = $this->timestamp ?? \time();
-        if (isset($payload['exp']) && $timestamp >= ($payload['exp'] + $this->leeway)) {
-            throw new JWTException('Invalid token: Expired', static::ERROR_TOKEN_EXPIRED);
-        }
+        $checks    = [
+            ['exp', $this->leeway /*          */ , static::ERROR_TOKEN_EXPIRED, 'Expired'],
+            ['iat', $this->maxAge - $this->leeway, static::ERROR_TOKEN_EXPIRED, 'Expired'],
+            ['nbf', $this->maxAge - $this->leeway, static::ERROR_TOKEN_NOT_NOW, 'Not now'],
+        ];
 
-        if (isset($payload['iat']) && $timestamp >= ($payload['iat'] + $this->maxAge - $this->leeway)) {
-            throw new JWTException('Invalid token: Expired', static::ERROR_TOKEN_EXPIRED);
-        }
+        foreach ($checks as list($key, $offset, $code, $error)) {
+            if (isset($payload[$key])) {
+                $offset += $payload[$key];
+                $fail    = $key === 'nbf' ? $timestamp <= $offset : $timestamp >= $offset;
 
-        if (isset($payload['nbf']) && $timestamp <= ($payload['nbf'] - $this->leeway)) {
-            throw new JWTException('Invalid token: Cannot accept now', static::ERROR_TOKEN_NOT_NOW);
+                if ($fail) {
+                    throw new JWTException('Invalid token: ' . $error, $code);
+                }
+            }
         }
     }
 
