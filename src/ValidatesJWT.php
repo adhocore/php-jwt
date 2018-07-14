@@ -71,7 +71,7 @@ trait ValidatesJWT
      */
     protected function validateTimestamps(array $payload)
     {
-        $timestamp = $this->timestamp ?? \time();
+        $timestamp = $this->timestamp ?: \time();
         $checks    = [
             ['exp', $this->leeway /*          */ , static::ERROR_TOKEN_EXPIRED, 'Expired'],
             ['iat', $this->maxAge - $this->leeway, static::ERROR_TOKEN_EXPIRED, 'Expired'],
