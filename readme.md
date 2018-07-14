@@ -70,3 +70,8 @@ $jwt->setTestTimestamp();
 - Leeway support 0-120 seconds.
 - Timestamp spoofing for tests.
 - Passphrase support for `RS*` algos.
+
+### Consideration
+
+Be aware of some security related considerations as outlined [here](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/) which can be valid for any JWT implementations.
+
