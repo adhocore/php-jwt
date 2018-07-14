@@ -1,6 +1,6 @@
 {
     "name": "adhocore/jwt",
-    "description": "Ultra lightweight JSON web token (JWT) library for PHP7.",
+    "description": "Ultra lightweight JSON web token (JWT) library for PHP5.5+.",
     "type": "library",
     "keywords": [
         "jwt", "jwt-php", "auth", "json-web-token", "token"
