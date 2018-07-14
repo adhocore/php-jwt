@@ -71,6 +71,16 @@ $jwt->setTestTimestamp();
 - Timestamp spoofing for tests.
 - Passphrase support for `RS*` algos.
 
+### Integration
+
+#### Phalcon
+
+Check [adhocore/phalcon-ext](https://github.com/adhocore/phalcon-ext).
+
+#### Laravel/Lumen
+
+Check [tymondesign/jwt-auth](https://github.com/tymondesigns/jwt-auth).
+
 ### Consideration
 
 Be aware of some security related considerations as outlined [here](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/) which can be valid for any JWT implementations.
