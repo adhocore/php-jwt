@@ -95,12 +95,12 @@ trait ValidatesJWT
      */
     protected function validateKey()
     {
-        if (\is_string($this->key)) {
-            if (!\is_file($this->key)) {
-                throw new JWTException('Invalid key: Should be file path of private key', static::ERROR_KEY_INVALID);
+        if (\is_string($key = $this->key)) {
+            if (\substr($key, 0, 7) !== 'file://') {
+                $key = 'file://' . $key;
             }
 
-            $this->key = \openssl_get_privatekey('file://' . $this->key, $this->passphrase ?? '');
+            $this->key = \openssl_get_privatekey($key, $this->passphrase ?? '');
         }
 
         if (!\is_resource($this->key)) {
