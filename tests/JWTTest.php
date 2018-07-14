@@ -3,13 +3,12 @@
 namespace Ahc\Jwt\Test;
 
 use Ahc\Jwt\JWT;
-use Ahc\Jwt\JWTException;
 
 /** @coversDefaultClass \Ahc\Jwt\JWT */
 class JWTTest extends \PHPUnit\Framework\TestCase
 {
     /** @dataProvider data1 */
-    public function test_decode_encoded_token(string $key, string $algo, int $age, int $leeway, array $payload, array $header = [])
+    public function test_decode_encoded_token($key, $algo, $age, $leeway, array $payload, array $header = [])
     {
         $jwt   = new JWT($key, $algo, $age, $leeway);
         $token = $jwt->encode($payload, $header);
@@ -26,14 +25,15 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($payload, $decoded);
     }
 
+    /**
+     * @expectedException \Ahc\Jwt\JWTException
+     */
     public function test_json_fail()
     {
-        $this->expectException(JWTException::class);
-
         $jwt = new JWT('very^secre7');
 
         try {
-            $jwt->encode([random_bytes(10)]);
+            $jwt->encode([base64_decode('mF6u28o4K2cD3w==')]);
         } catch (\Exception $e) {
             $this->assertSame($e->getCode(), JWT::ERROR_JSON_FAILED, $e->getMessage());
 
@@ -41,11 +41,12 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    /** @dataProvider data2 */
-    public function test_decode_fail(string $key, string $algo, int $age, int $leeway, int $offset, int $error, $token)
+    /**
+     * @dataProvider data2
+     * @expectedException \Ahc\Jwt\JWTException
+     */
+    public function test_decode_fail($key, $algo, $age, $leeway, $offset, $error, $token)
     {
-        $this->expectException(JWTException::class);
-
         $jwt   = new JWT($key, $algo, $age, $leeway);
         $token = is_string($token) ? $token : $jwt->encode($token);
 
@@ -63,7 +64,7 @@ class JWTTest extends \PHPUnit\Framework\TestCase
     }
 
     /** @dataProvider data1 */
-    public function test_rs_decode_encoded(string $key, string $algo, int $age, int $leeway, array $payload, array $header = [])
+    public function test_rs_decode_encoded($key, $algo, $age, $leeway, array $payload, array $header = [])
     {
         $key   = __DIR__ . '/stubs/priv.key';
         $jwt   = new JWT($key, str_replace('HS', 'RS', $algo), $age, $leeway);
@@ -81,11 +82,12 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($payload, $decoded);
     }
 
-    /** @dataProvider data3 */
-    public function test_rs_invalid_key(string $method, string $key, $arg)
+    /**
+     * @dataProvider data3
+     * @expectedException \Ahc\Jwt\JWTException
+     */
+    public function test_rs_invalid_key($method, $key, $arg)
     {
-        $this->expectException(JWTException::class);
-
         $jwt = new JWT($key, 'RS256');
 
         try {
@@ -109,19 +111,20 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         return $jwt;
     }
 
+    /**
+     * @expectedException \Ahc\Jwt\JWTException
+     * @expectedExceptionMessage Invalid token: Unknown key ID
+     */
     public function test_kid_invalid()
     {
         // keys can be sent as array too
         $jwt = new JWT(['key1' => 'secret1', 'key2' => 'secret2'], 'HS256');
 
-        $this->expectException(JWTException::class);
-        $this->expectExceptionMessage('Invalid token: Unknown key ID');
-
         // Use key3
         $jwt->encode(['a' => 1, 'exp' => time() + 1000], ['kid' => 'key3']);
     }
 
-    public function data1() : array
+    public function data1()
     {
         return [
             ['secret', 'HS256', rand(10, 1000), rand(1, 10), [
@@ -152,7 +155,7 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function data2() : array
+    public function data2()
     {
         return [
             ['topsecret',     'HS256', 5,  0,  0,  JWT::ERROR_TOKEN_INVALID,    'a.b'],

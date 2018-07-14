@@ -3,7 +3,7 @@
 namespace Ahc\Jwt;
 
 /**
- * JSON Web Token (JWT) implementation in PHP7.
+ * JSON Web Token (JWT) implementation in PHP5.5+.
  *
  * @author   Jitendra Adhikari <jiten.adhikary@gmail.com>
  * @license  MIT
@@ -68,7 +68,7 @@ class JWT
      * @param int             $leeway Leeway for clock skew. Shouldnot be more than 2 minutes (120s).
      * @param string          $pass   The passphrase (only for RS* algos).
      */
-    public function __construct($key, string $algo = 'HS256', int $maxAge = 3600, int $leeway = 0, string $pass = null)
+    public function __construct($key, $algo = 'HS256', $maxAge = 3600, $leeway = 0, $pass = null)
     {
         $this->validateConfig($key, $algo, $maxAge, $leeway);
 
@@ -91,7 +91,7 @@ class JWT
      *
      * @return self
      */
-    public function registerKeys(array $keys): self
+    public function registerKeys(array $keys)
     {
         $this->keys = \array_merge($this->keys, $keys);
 
@@ -106,14 +106,14 @@ class JWT
      *
      * @return string URL safe JWT token.
      */
-    public function encode(array $payload, array $header = []) : string
+    public function encode(array $payload, array $header = [])
     {
         $header = ['typ' => 'JWT', 'alg' => $this->algo] + $header;
 
         $this->validateKid($header);
 
         if (!isset($payload['iat']) && !isset($payload['exp'])) {
-            $payload['exp'] = ($this->timestamp ?? \time()) + $this->maxAge;
+            $payload['exp'] = ($this->timestamp ?: \time()) + $this->maxAge;
         }
 
         $header    = $this->urlSafeEncode($header);
@@ -130,7 +130,7 @@ class JWT
      *
      * @return array
      */
-    public function decode(string $token) : array
+    public function decode($token)
     {
         if (\substr_count($token, '.') < 2) {
             throw new JWTException('Invalid token: Incomplete segments', static::ERROR_TOKEN_INVALID);
@@ -156,7 +156,7 @@ class JWT
      *
      * @param int|null $timestamp
      */
-    public function setTestTimestamp(int $timestamp = null) : JWT
+    public function setTestTimestamp($timestamp = null)
     {
         $this->timestamp = $timestamp;
 
@@ -170,7 +170,7 @@ class JWT
      *
      * @return string
      */
-    protected function sign(string $input) : string
+    protected function sign($input)
     {
         // HMAC SHA.
         if (\substr($this->algo, 0, 2) === 'HS') {
@@ -194,7 +194,7 @@ class JWT
      *
      * @return bool
      */
-    protected function verify(string $input, string $signature) : bool
+    protected function verify($input, $signature)
     {
         $algo = $this->algos[$this->algo];
 
@@ -221,7 +221,7 @@ class JWT
      *
      * @return string
      */
-    protected function urlSafeEncode($data) : string
+    protected function urlSafeEncode($data)
     {
         if (\is_array($data)) {
             $data = \json_encode($data, JSON_UNESCAPED_SLASHES);
@@ -241,7 +241,7 @@ class JWT
      *
      * @return array|\stdClass|string
      */
-    protected function urlSafeDecode(string $data, bool $asJson = true)
+    protected function urlSafeDecode($data, $asJson = true)
     {
         if (!$asJson) {
             return \base64_decode(\strtr($data, '-_', '+/'));
