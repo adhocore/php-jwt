@@ -17,7 +17,7 @@ trait ValidatesJWT
      *
      * @codeCoverageIgnore
      */
-    protected function validateConfig($key, string $algo, int $maxAge, int $leeway)
+    protected function validateConfig($key, $algo, $maxAge, $leeway)
     {
         if (empty($key)) {
             throw new JWTException('Signing key cannot be empty', static::ERROR_KEY_EMPTY);
@@ -71,7 +71,7 @@ trait ValidatesJWT
      */
     protected function validateTimestamps(array $payload)
     {
-        $timestamp = $this->timestamp ?? \time();
+        $timestamp = $this->timestamp ?: \time();
         $checks    = [
             ['exp', $this->leeway /*          */ , static::ERROR_TOKEN_EXPIRED, 'Expired'],
             ['iat', $this->maxAge - $this->leeway, static::ERROR_TOKEN_EXPIRED, 'Expired'],
@@ -100,7 +100,7 @@ trait ValidatesJWT
                 $key = 'file://' . $key;
             }
 
-            $this->key = \openssl_get_privatekey($key, $this->passphrase ?? '');
+            $this->key = \openssl_get_privatekey($key, $this->passphrase ?: '');
         }
 
         if (!\is_resource($this->key)) {

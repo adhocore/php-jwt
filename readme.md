@@ -8,7 +8,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 
-- Lightweight JSON Web Token (JWT) library for PHP7.
+- Lightweight JSON Web Token (JWT) library for PHP5.5 or newer.
 
 ## Installation
 ```

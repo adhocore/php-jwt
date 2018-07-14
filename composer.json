@@ -1,6 +1,6 @@
 {
     "name": "adhocore/jwt",
-    "description": "Ultra lightweight JSON web token (JWT) library for PHP7.",
+    "description": "Ultra lightweight JSON web token (JWT) library for PHP5.5+.",
     "type": "library",
     "keywords": [
         "jwt", "jwt-php", "auth", "json-web-token", "token"
@@ -15,7 +15,8 @@
     "autoload": {
         "psr-4": {
             "Ahc\\Jwt\\": "src/"
-        }
+        },
+        "files": ["src/functions.php"]
     },
     "autoload-dev": {
         "psr-4": {
@@ -23,9 +24,9 @@
         }
     },
     "require": {
-        "php": ">=7.0"
+        "php": ">=5.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0.0"
+        "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5"
     }
 }
