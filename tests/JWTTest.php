@@ -3,7 +3,6 @@
 namespace Ahc\Jwt\Test;
 
 use Ahc\Jwt\JWT;
-use Ahc\Jwt\JWTException;
 
 /** @coversDefaultClass \Ahc\Jwt\JWT */
 class JWTTest extends \PHPUnit\Framework\TestCase
