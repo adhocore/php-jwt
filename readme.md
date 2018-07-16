@@ -1,5 +1,7 @@
 ## adhocore/jwt
 
+If you are new to JWT or want to refresh your familiarity with it, please check [jwt.io](https://jwt.io/) 
+
 [![Latest Version](https://img.shields.io/github/release/adhocore/jwt.svg?style=flat-square)](https://github.com/adhocore/jwt/releases)
 [![Travis Build](https://img.shields.io/travis/adhocore/jwt/master.svg?style=flat-square)](https://travis-ci.org/adhocore/jwt?branch=master)
 [![Scrutinizer CI](https://img.shields.io/scrutinizer/g/adhocore/jwt.svg?style=flat-square)](https://scrutinizer-ci.com/g/adhocore/jwt/?branch=master)
