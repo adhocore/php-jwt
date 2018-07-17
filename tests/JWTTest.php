@@ -13,9 +13,9 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         $jwt   = new JWT($key, $algo, $age, $leeway);
         $token = $jwt->encode($payload, $header);
 
-        $this->assertTrue(is_string($token));
+        $this->assertInternalType('string', $token);
         $decoded = $jwt->decode($token);
-        $this->assertTrue(is_array($decoded));
+        $this->assertInternalType('array', $decoded);
 
         // Normalize.
         if (!isset($payload['exp'])) {
@@ -70,9 +70,9 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         $jwt   = new JWT($key, str_replace('HS', 'RS', $algo), $age, $leeway);
         $token = $jwt->encode($payload, $header);
 
-        $this->assertTrue(is_string($token));
+        $this->assertInternalType('string', $token);
         $decoded = $jwt->decode($token);
-        $this->assertTrue(is_array($decoded));
+        $this->assertInternalType('array', $decoded);
 
         // Normalize.
         if (!isset($payload['exp'])) {
