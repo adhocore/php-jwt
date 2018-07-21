@@ -1,11 +1,11 @@
 ## adhocore/jwt
 
-If you are new to JWT or want to refresh your familiarity with it, please check [jwt.io](https://jwt.io/) 
+If you are new to JWT or want to refresh your familiarity with it, please check [jwt.io](https://jwt.io/)
 
-[![Latest Version](https://img.shields.io/github/release/adhocore/jwt.svg?style=flat-square)](https://github.com/adhocore/jwt/releases)
+[![Latest Version](https://img.shields.io/github/release/adhocore/php-jwt.svg?style=flat-square)](https://github.com/adhocore/php-jwt/releases)
 [![Travis Build](https://img.shields.io/travis/adhocore/php-jwt/master.svg?style=flat-square)](https://travis-ci.org/adhocore/php-jwt?branch=master)
-[![Scrutinizer CI](https://img.shields.io/scrutinizer/g/adhocore/jwt.svg?style=flat-square)](https://scrutinizer-ci.com/g/adhocore/jwt/?branch=master)
-[![Codecov branch](https://img.shields.io/codecov/c/github/adhocore/jwt/master.svg?style=flat-square)](https://codecov.io/gh/adhocore/jwt)
+[![Scrutinizer CI](https://img.shields.io/scrutinizer/g/adhocore/php-jwt.svg?style=flat-square)](https://scrutinizer-ci.com/g/adhocore/php-jwt/?branch=master)
+[![Codecov branch](https://img.shields.io/codecov/c/github/adhocore/php-jwt/master.svg?style=flat-square)](https://codecov.io/gh/adhocore/php-jwt)
 [![StyleCI](https://styleci.io/repos/88168137/shield)](https://styleci.io/repos/88168137)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
