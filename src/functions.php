@@ -1,6 +1,14 @@
 <?php
 
-// @codeCoverageIgnoreStart
+/*
+ * This file is part of the PHP-JWT package.
+ *
+ * (c) Jitendra Adhikari <jiten.adhikary@gmail.com>
+ *     <https://github.com/adhocore>
+ *
+ * Licensed under MIT license.
+ */
+
 if (!\function_exists('hash_equals')) {
     // PHP5.5 compat.
     // @see http://php.net/manual/en/function.hash-equals.php#115635
