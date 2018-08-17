@@ -81,7 +81,7 @@ Check [adhocore/phalcon-ext](https://github.com/adhocore/phalcon-ext).
 
 #### Laravel/Lumen
 
-Check [tymondesign/jwt-auth](https://github.com/tymondesigns/jwt-auth).
+Coming soon [laravel-jwt](https://github.com/adhocore/laravel-jwt).
 
 ### Consideration
 
