@@ -26,24 +26,33 @@ use Ahc\Jwt\JWT;
 $jwt = new JWT('secret', 'HS256', 3600, 10);
 ```
 
-Only the key is required. Defaults will be used for the rest:
+> Only the key is required. Defaults will be used for the rest:
 ```php
 $jwt = new JWT('secret');
 // algo = HS256, maxAge = 3600, leeway = 0
 ```
 
-For `RS*` algo, the key should be either a resource like below:
+> For `RS*` algo, the key should be either a resource like below:
 ```php
-$key = openssl_pkey_new(['digest_alg' => 'sha256', 'private_key_bits' => 1024, 'private_key_type' => OPENSSL_KEYTYPE_RSA]);
+$key = openssl_pkey_new([
+    'digest_alg' => 'sha256',
+    'private_key_bits' => 1024,
+    'private_key_type' => OPENSSL_KEYTYPE_RSA,
+]);
+```
 
-// OR, a string with full path to the RSA private key like below:
+> OR, a string with full path to the RSA private key like below:
+```php
 $key = '/path/to/rsa.key';
 
 // Then, instantiate JWT with this key and RS* as algo:
 $jwt = new JWT($key, 'RS384');
 ```
 
-Generate JWT token from payload array:
+***Pro***
+You dont need to specify pub key path, that is deduced from priv key.
+
+> Generate JWT token from payload array:
 ```php
 $token = $jwt->encode([
     'uid'    => 1,
@@ -53,12 +62,12 @@ $token = $jwt->encode([
 ]);
 ```
 
-Retrieve the payload array:
+> Retrieve the payload array:
 ```php
 $payload = $jwt->decode($token);
 ```
 
-Oneliner:
+> Oneliner:
 ```
 $token   = (new JWT('topSecret', 'HS512', 1800))->encode(['uid' => 1, 'scopes' => ['user']]));
 $payload = (new JWT('topSecret', 'HS512', 1800))->decode($token);
@@ -66,12 +75,12 @@ $payload = (new JWT('topSecret', 'HS512', 1800))->decode($token);
 
 ***Pro***
 
-Can pass extra headers into encode() with second parameter:
+> Can pass extra headers into encode() with second parameter:
 ```php
 $token = $jwt->encode($payload, ['hdr' => 'hdr_value']);
 ```
 
-Spoof time() for testing token expiry:
+> Spoof time() for testing token expiry:
 ```php
 $jwt->setTestTimestamp(time() + 10000);
 
@@ -79,7 +88,7 @@ $jwt->setTestTimestamp(time() + 10000);
 $jwt->parse($token);
 ```
 
-Call again without parameter to stop spoofing time():
+> Call again without parameter to stop spoofing time():
 ```php
 $jwt->setTestTimestamp();
 ```
