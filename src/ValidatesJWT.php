@@ -122,7 +122,7 @@ trait ValidatesJWT
      */
     protected function validateLastJson()
     {
-        if (JSON_ERROR_NONE === \json_last_error()) {
+        if (\JSON_ERROR_NONE === \json_last_error()) {
             return;
         }
 
