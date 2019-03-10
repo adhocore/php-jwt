@@ -83,7 +83,7 @@ class JWT
 
         if (\is_array($key)) {
             $this->registerKeys($key);
-            $key = reset($key); // use first one!
+            $key = \reset($key); // use first one!
         }
 
         $this->key        = $key;
@@ -233,7 +233,7 @@ class JWT
     protected function urlSafeEncode($data)
     {
         if (\is_array($data)) {
-            $data = \json_encode($data, JSON_UNESCAPED_SLASHES);
+            $data = \json_encode($data, \JSON_UNESCAPED_SLASHES);
             $this->validateLastJson();
         }
 
