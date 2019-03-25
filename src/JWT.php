@@ -44,6 +44,7 @@ class JWT
         'RS256' => \OPENSSL_ALGO_SHA256,
         'RS384' => \OPENSSL_ALGO_SHA384,
         'RS512' => \OPENSSL_ALGO_SHA512,
+        'ECDSA' => 'ecdsa-with-SHA1',
     ];
 
     /** @var string|resource The signature key. */
@@ -70,12 +71,12 @@ class JWT
     /**
      * Constructor.
      *
-     * @param string|resource $key    The signature key. For RS* it should be file path or resource of private key.
-     * @param string          $algo   The algorithm to sign/verify the token.
-     * @param int             $maxAge The TTL of token to be used to determine expiry if `iat` claim is present.
-     *                                This is also used to provide default `exp` claim in case it is missing.
-     * @param int             $leeway Leeway for clock skew. Shouldnot be more than 2 minutes (120s).
-     * @param string          $pass   The passphrase (only for RS* algos).
+     * @param string|array|resource $key    The signature key. For RS* it should be file path or resource of private key.
+     * @param string                $algo   The algorithm to sign/verify the token.
+     * @param int                   $maxAge The TTL of token to be used to determine expiry if `iat` claim is present.
+     *                                      This is also used to provide default `exp` claim in case it is missing.
+     * @param int                   $leeway Leeway for clock skew. Shouldnot be more than 2 minutes (120s).
+     * @param string                $pass   The passphrase (only for RS* algos).
      */
     public function __construct($key, $algo = 'HS256', $maxAge = 3600, $leeway = 0, $pass = null)
     {

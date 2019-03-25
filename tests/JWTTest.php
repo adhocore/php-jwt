@@ -161,6 +161,12 @@ class JWTTest extends \PHPUnit\Framework\TestCase
             ['secret', 'HS512', rand(10, 1000), rand(1, 10), [
                 '_' . rand() => rand(),
             ]],
+            ['secret', 'ECDSA', rand(10, 1000), rand(1, 10), [
+                'uid'    => rand(),
+                'scopes' => ['user'],
+                'msg'    => 'fdsfdsf',
+                'iss'    => 'https://mysite.com',
+            ]],
         ];
     }
 
@@ -207,6 +213,9 @@ class JWTTest extends \PHPUnit\Framework\TestCase
                 'nbf' => time(),
             ]],
             ['NN=KK(*({:BJ', 'HS512',  10,  0,  -20,  JWT::ERROR_TOKEN_NOT_NOW, [
+                'nbf' => time() - 10,
+            ]],
+            ['NN=KK(*({:BJ', 'ECDSA',  10,  0,  -20,  JWT::ERROR_TOKEN_NOT_NOW, [
                 'nbf' => time() - 10,
             ]],
         ];
