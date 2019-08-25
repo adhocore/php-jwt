@@ -10,7 +10,7 @@ If you are new to JWT or want to refresh your familiarity with it, please check 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 
-- Lightweight JSON Web Token (JWT) library for PHP5.5 or newer.
+- Lightweight JSON Web Token (JWT) library for PHP5.6 or newer.
 
 ## Installation
 ```
@@ -23,7 +23,7 @@ composer require adhocore/jwt
 ```
 'HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512'
 ```
-- `kid` support
+- `kid` support.
 - Leeway support 0-120 seconds.
 - Timestamp spoofing for tests.
 - Passphrase support for `RS*` algos.
@@ -79,7 +79,7 @@ $payload = $jwt->decode($token);
 ```
 
 > Oneliner:
-```
+```php
 $token   = (new JWT('topSecret', 'HS512', 1800))->encode(['uid' => 1, 'scopes' => ['user']]));
 $payload = (new JWT('topSecret', 'HS512', 1800))->decode($token);
 ```
