@@ -17,6 +17,17 @@ If you are new to JWT or want to refresh your familiarity with it, please check 
 composer require adhocore/jwt
 ```
 
+## Features
+
+- Six algorithms supported:
+```
+'HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512'
+```
+- `kid` support
+- Leeway support 0-120 seconds.
+- Timestamp spoofing for tests.
+- Passphrase support for `RS*` algos.
+
 ## Usage
 
 ```php
@@ -93,15 +104,19 @@ $jwt->parse($token);
 $jwt->setTestTimestamp();
 ```
 
-## Features
+> Examples with `kid`:
 
-- Six algorithms supported:
+```php
+$jwt = new JWT(['key1' => 'secret1', 'key2' => 'secret2']);
+
+// Use key2
+$token = $jwt->encode(['a' => 1, 'exp' => time() + 1000], ['kid' => 'key2']);
+
+$payload = $jwt->decode($token);
+
+$token = $jwt->encode(['a' => 1, 'exp' => time() + 1000], ['kid' => 'key3']);
+// -> Exception with message Unknown key ID key3
 ```
-'HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512'
-```
-- Leeway support 0-120 seconds.
-- Timestamp spoofing for tests.
-- Passphrase support for `RS*` algos.
 
 ### Integration
 
