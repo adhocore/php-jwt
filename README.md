@@ -118,6 +118,10 @@ $token = $jwt->encode(['a' => 1, 'exp' => time() + 1000], ['kid' => 'key3']);
 // -> Exception with message Unknown key ID key3
 ```
 
+## Stabillity
+
+Although not yet in v1.0, but the library and the API it provides is pretty stable and will not be changed too broadly.
+
 ### Integration
 
 #### Phalcon
