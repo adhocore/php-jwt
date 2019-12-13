@@ -26,7 +26,7 @@ trait ValidatesJWT
      *
      * @codeCoverageIgnore
      */
-    protected function validateConfig($key, $algo, $maxAge, $leeway)
+    protected function validateConfig($key, string $algo, int $maxAge, int $leeway)
     {
         if (empty($key)) {
             throw new JWTException('Signing key cannot be empty', static::ERROR_KEY_EMPTY);
