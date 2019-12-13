@@ -129,8 +129,7 @@ $token = $jwt->encode(['a' => 1, 'exp' => time() + 1000], ['kid' => 'key3']);
 
 ## Stabillity
 
-Although not yet in v1.0, but the library and the API it provides is pretty stable and will not be changed too broadly.
-
+The library is now marked at version `1.*.*` as being stable in functionality and API.
 
 ### Integration
 
