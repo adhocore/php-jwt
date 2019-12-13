@@ -10,11 +10,18 @@ If you are new to JWT or want to refresh your familiarity with it, please check 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 
-- Lightweight JSON Web Token (JWT) library for PHP5.6 or newer.
+- Lightweight JSON Web Token (JWT) library for PHP7.
+- If you still use PHP5.6, use version [0.1.2](https://github.com/adhocore/php-jwt/releases/tag/v0.1.2)
 
 ## Installation
-```
+```sh
+# PHP7.0+
 composer require adhocore/jwt
+
+# PHP5.6
+composer require adhocore/jwt:0.1.2
+
+# For PHP5.4-5.5, use version 0.1.2 with a polyfill for https://php.net/hash_equals
 ```
 
 ## Features
@@ -106,7 +113,7 @@ $jwt->parse($token);
 $jwt->setTestTimestamp();
 ```
 
-> Examples with `kid`:
+#### Examples with `kid`
 
 ```php
 $jwt = new JWT(['key1' => 'secret1', 'key2' => 'secret2']);
@@ -138,4 +145,3 @@ Coming soon [laravel-jwt](https://github.com/adhocore/laravel-jwt).
 ### Consideration
 
 Be aware of some security related considerations as outlined [here](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/) which can be valid for any JWT implementations.
-
