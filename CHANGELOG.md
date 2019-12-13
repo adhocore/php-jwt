@@ -1,3 +1,12 @@
+## [0.1.2](https://github.com/adhocore/php-jwt/releases/tag/0.1.2) (2019-12-13)
+
+### Documentations
+- Minor update (Jitendra Adhikari) [_891c42b_](https://github.com/adhocore/php-jwt/commit/891c42b)
+
+### Builds
+- **Travis**: Add php7.4 (Jitendra Adhikari) [_b0f42d1_](https://github.com/adhocore/php-jwt/commit/b0f42d1)
+
+
 ## [v0.1.0](https://github.com/adhocore/php-jwt/releases/tag/v0.1.0) (2019-09-22)
 
 ### Documentations
