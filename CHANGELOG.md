@@ -1,3 +1,21 @@
+## [1.0.0](https://github.com/adhocore/php-jwt/releases/tag/1.0.0) (2019-12-13)
+
+### Internal Refactors
+- Strict types (Jitendra Adhikari) [_cb2b81e_](https://github.com/adhocore/php-jwt/commit/cb2b81e)
+- Add typehints (Jitendra Adhikari) [_17477d9_](https://github.com/adhocore/php-jwt/commit/17477d9)
+
+### Miscellaneous
+- **Phpunit**: Remove obsolete prop (Jitendra Adhikari) [_cca8b01_](https://github.com/adhocore/php-jwt/commit/cca8b01)
+- **Composer**: Set min php 7, add test script (Jitendra Adhikari) [_b4a317e_](https://github.com/adhocore/php-jwt/commit/b4a317e)
+
+### Documentations
+- On stability (Jitendra Adhikari) [_2a344b8_](https://github.com/adhocore/php-jwt/commit/2a344b8)
+- On PHP versions (Jitendra Adhikari) [_62586ec_](https://github.com/adhocore/php-jwt/commit/62586ec)
+
+### Builds
+- **Travis**: Retire php5.6 (Jitendra Adhikari) [_45ec90e_](https://github.com/adhocore/php-jwt/commit/45ec90e)
+
+
 ## [0.1.2](https://github.com/adhocore/php-jwt/releases/tag/0.1.2) (2019-12-13)
 
 ### Documentations
