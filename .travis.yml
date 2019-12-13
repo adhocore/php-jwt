@@ -14,6 +14,7 @@ php:
   - 7.1
   - 7.2
   - 7.3
+  - 7.4
   # - nightly
 
 install:
@@ -26,4 +27,4 @@ script:
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
 
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
