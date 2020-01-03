@@ -11,7 +11,7 @@ If you are new to JWT or want to refresh your familiarity with it, please check 
 
 
 - Lightweight JSON Web Token (JWT) library for PHP7.
-- If you still use PHP5.6, use version [0.1.2](https://github.com/adhocore/php-jwt/releases/tag/v0.1.2)
+- If you still use PHP5.6, use version [0.1.2](https://github.com/adhocore/php-jwt/releases/tag/0.1.2)
 
 ## Installation
 ```sh
