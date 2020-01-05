@@ -29,6 +29,7 @@
         "phpunit/phpunit": "^6.5 || ^7.5"
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "phpunit",
+        "test:cov": "phpunit --coverage-text --coverage-clover coverage.xml --coverage-html vendor/cov"
     }
 }
