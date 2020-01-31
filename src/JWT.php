@@ -145,6 +145,8 @@ class JWT
      * @param string $token
      *
      * @return array
+     *
+     * @throws JWTException
      */
     public function decode(string $token): array
     {
