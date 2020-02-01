@@ -1,3 +1,14 @@
+## [1.0.1](https://github.com/adhocore/php-jwt/releases/tag/1.0.1) (2020-02-01)
+
+### Miscellaneous
+- **Travis**: Script (Jitendra Adhikari) [_5dfe8ed_](https://github.com/adhocore/php-jwt/commit/5dfe8ed)
+- **Composer**: Bump adhocore/cli (Jitendra Adhikari) [_604bded_](https://github.com/adhocore/php-jwt/commit/604bded)
+- **Ci**: Trigger build (Jitendra Adhikari) [_3bd8190_](https://github.com/adhocore/php-jwt/commit/3bd8190)
+
+### Documentations
+- Fix 0.1.2 url (Jitendra Adhikari) [_ba8b621_](https://github.com/adhocore/php-jwt/commit/ba8b621)
+
+
 ## [1.0.0](https://github.com/adhocore/php-jwt/releases/tag/1.0.0) (2019-12-13)
 
 ### Internal Refactors
