@@ -116,6 +116,7 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         $token = $jwt->encode($payload = ['a' => 1, 'exp' => time() + 1000], ['kid' => 'key2']);
 
         $this->assertSame($payload, $jwt->decode($token));
+        $this->assertSame($payload, $jwt->decode($token, false));
 
         return $jwt;
     }
