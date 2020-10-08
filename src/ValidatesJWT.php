@@ -86,7 +86,7 @@ trait ValidatesJWT
         $checks    = [
             ['exp', $this->leeway /*          */ , static::ERROR_TOKEN_EXPIRED, 'Expired'],
             ['iat', $this->maxAge - $this->leeway, static::ERROR_TOKEN_EXPIRED, 'Expired'],
-            ['nbf', $this->maxAge - $this->leeway, static::ERROR_TOKEN_NOT_NOW, 'Not now'],
+            ['nbf', -$this->leeway, static::ERROR_TOKEN_NOT_NOW, 'Not now'],
         ];
 
         foreach ($checks as list($key, $offset, $code, $error)) {
