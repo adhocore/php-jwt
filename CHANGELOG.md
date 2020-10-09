@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/adhocore/php-jwt/releases/tag/1.1.0) (2020-10-09)
+
+### Features
+- Decode option without verify exp or sign (Jitendra Adhikari) [_e2dc2a6_](https://github.com/adhocore/php-jwt/commit/e2dc2a6)
+
+
 ## [1.0.1](https://github.com/adhocore/php-jwt/releases/tag/1.0.1) (2020-02-01)
 
 ### Miscellaneous
