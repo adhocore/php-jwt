@@ -114,7 +114,11 @@ trait ValidatesJWT
             $this->key = \openssl_get_privatekey($key, $this->passphrase ?: '');
         }
 
-        if (!\is_resource($this->key)) {
+        if (\PHP_VERSION_ID < 80000 && !\is_resource($this->key) ) {
+            throw new JWTException('Invalid key: Should be resource of private key', static::ERROR_KEY_INVALID);
+        }
+
+        if (\PHP_VERSION_ID > 80000 && !($this->key instanceof OpenSSLAsymmetricKey || $this->key instanceof OpenSSLCertificate || $this->key instanceof OpenSSLCertificateSigningRequest)) {
             throw new JWTException('Invalid key: Should be resource of private key', static::ERROR_KEY_INVALID);
         }
     }
