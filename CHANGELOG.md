@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/adhocore/php-jwt/releases/tag/1.1.1) (2021-02-02)
+
+### Miscellaneous
+- Supporting php8 as well (Jitendra Adhikari)
+
+### Builds
+- **Travis**: Try php8 (Jitendra Adhikari)
+
+
 ## [1.1.0](https://github.com/adhocore/php-jwt/releases/tag/1.1.0) (2020-10-09)
 
 ### Features
