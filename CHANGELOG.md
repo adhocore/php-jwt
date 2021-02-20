@@ -1,3 +1,9 @@
+## [1.1.2](https://github.com/adhocore/php-jwt/releases/tag/1.1.2) (2021-02-20)
+
+### Bug Fixes
+- Escape namespace for PHP8 checks, break long lines (Jitendra Adhikari)
+
+
 ## [1.1.1](https://github.com/adhocore/php-jwt/releases/tag/1.1.1) (2021-02-02)
 
 ### Miscellaneous
