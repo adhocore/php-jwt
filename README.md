@@ -8,6 +8,8 @@ If you are new to JWT or want to refresh your familiarity with it, please check 
 [![Codecov branch](https://img.shields.io/codecov/c/github/adhocore/php-jwt/master.svg?style=flat-square)](https://codecov.io/gh/adhocore/php-jwt)
 [![StyleCI](https://styleci.io/repos/88168137/shield)](https://styleci.io/repos/88168137)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+[![Donate](https://img.shields.io/badge/donate-paypal-blue.svg?style=flat-square)](https://www.paypal.me/ji10/50usd)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Lightweight+JSON+Web+Token+JWT+library+for+PHP7&url=https://github.com/adhocore/php-jwt&hashtags=php,jwt,auth)
 
 
 - Lightweight JSON Web Token (JWT) library for PHP7.
