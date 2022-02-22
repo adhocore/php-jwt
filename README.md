@@ -91,7 +91,7 @@ $payload = $jwt->decode($token);
 
 > Oneliner:
 ```php
-$token   = (new JWT('topSecret', 'HS512', 1800))->encode(['uid' => 1, 'scopes' => ['user']]));
+$token   = (new JWT('topSecret', 'HS512', 1800))->encode(['uid' => 1, 'scopes' => ['user']]);
 $payload = (new JWT('topSecret', 'HS512', 1800))->decode($token);
 ```
 
