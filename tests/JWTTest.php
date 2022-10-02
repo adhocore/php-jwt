@@ -22,9 +22,9 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         $jwt   = new JWT($key, $algo, $age, $leeway);
         $token = $jwt->encode($payload, $header);
 
-        $this->assertInternalType('string', $token);
+        $this->assertIsString($token);
         $decoded = $jwt->decode($token);
-        $this->assertInternalType('array', $decoded);
+        $this->assertIsArray($decoded);
 
         // Normalize.
         if (!isset($payload['exp'])) {
@@ -34,11 +34,10 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($payload, $decoded);
     }
 
-    /**
-     * @expectedException \Ahc\Jwt\JWTException
-     */
     public function test_json_fail()
     {
+        $this->expectException(\Ahc\Jwt\JWTException::class);
+
         $jwt = new JWT('very^secre7');
 
         try {
@@ -52,10 +51,11 @@ class JWTTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider data2
-     * @expectedException \Ahc\Jwt\JWTException
      */
     public function test_decode_fail($key, $algo, $age, $leeway, $offset, $error, $token)
     {
+        $this->expectException(\Ahc\Jwt\JWTException::class);
+
         $jwt   = new JWT($key, $algo, $age, $leeway);
         $token = is_string($token) ? $token : $jwt->encode($token);
 
@@ -79,9 +79,9 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         $jwt   = new JWT($key, str_replace('HS', 'RS', $algo), $age, $leeway);
         $token = $jwt->encode($payload, $header);
 
-        $this->assertInternalType('string', $token);
+        $this->assertIsString($token);
         $decoded = $jwt->decode($token);
-        $this->assertInternalType('array', $decoded);
+        $this->assertIsArray($decoded);
 
         // Normalize.
         if (!isset($payload['exp'])) {
@@ -93,10 +93,11 @@ class JWTTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider data3
-     * @expectedException \Ahc\Jwt\JWTException
      */
     public function test_rs_invalid_key($method, $key, $arg)
     {
+        $this->expectException(\Ahc\Jwt\JWTException::class);
+
         $jwt = new JWT($key, 'RS256');
 
         try {
@@ -121,12 +122,11 @@ class JWTTest extends \PHPUnit\Framework\TestCase
         return $jwt;
     }
 
-    /**
-     * @expectedException \Ahc\Jwt\JWTException
-     * @expectedExceptionMessage Invalid token: Unknown key ID
-     */
     public function test_kid_invalid()
     {
+        $this->expectException(\Ahc\Jwt\JWTException::class);
+        $this->expectExceptionMessage('Invalid token: Unknown key ID');
+
         // keys can be sent as array too
         $jwt = new JWT(['key1' => 'secret1', 'key2' => 'secret2'], 'HS256');
 

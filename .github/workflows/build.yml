@@ -25,7 +25,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - php: '7.0'
+          # - php: '7.0' # phpunit 7.5+ doesn't support it
           - php: '7.1'
           - php: '7.2'
           - php: '7.3'
