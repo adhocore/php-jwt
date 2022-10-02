@@ -13,6 +13,29 @@ declare(strict_types=1);
 
 namespace Ahc\Jwt;
 
+use stdClass;
+use function array_merge;
+use function base64_decode;
+use function base64_encode;
+use function explode;
+use function hash_equals;
+use function hash_hmac;
+use function is_array;
+use function json_decode;
+use function json_encode;
+use function openssl_pkey_get_details;
+use function openssl_sign;
+use function openssl_verify;
+use function reset;
+use function rtrim;
+use function strtr;
+use function substr_count;
+use function time;
+use const JSON_UNESCAPED_SLASHES;
+use const OPENSSL_ALGO_SHA256;
+use const OPENSSL_ALGO_SHA384;
+use const OPENSSL_ALGO_SHA512;
+
 /**
  * JSON Web Token (JWT) implementation in PHP5.5+.
  *
@@ -43,9 +66,9 @@ class JWT
         'HS256' => 'sha256',
         'HS384' => 'sha384',
         'HS512' => 'sha512',
-        'RS256' => \OPENSSL_ALGO_SHA256,
-        'RS384' => \OPENSSL_ALGO_SHA384,
-        'RS512' => \OPENSSL_ALGO_SHA512,
+        'RS256' => OPENSSL_ALGO_SHA256,
+        'RS384' => OPENSSL_ALGO_SHA384,
+        'RS512' => OPENSSL_ALGO_SHA512,
     ];
 
     /** @var string|resource The signature key. */
@@ -55,7 +78,7 @@ class JWT
     protected $keys = [];
 
     /** @var int|null Use setTestTimestamp() to set custom value for time(). Useful for testability. */
-    protected $timestamp = null;
+    protected $timestamp;
 
     /** @var string The JWT signing algorithm. Defaults to HS256. */
     protected $algo = 'HS256';
@@ -88,9 +111,9 @@ class JWT
     ) {
         $this->validateConfig($key, $algo, $maxAge, $leeway);
 
-        if (\is_array($key)) {
+        if (is_array($key)) {
             $this->registerKeys($key);
-            $key = \reset($key); // use first one!
+            $key = reset($key); // use first one!
         }
 
         $this->key        = $key;
@@ -109,7 +132,7 @@ class JWT
      */
     public function registerKeys(array $keys): self
     {
-        $this->keys = \array_merge($this->keys, $keys);
+        $this->keys = array_merge($this->keys, $keys);
 
         return $this;
     }
@@ -129,7 +152,7 @@ class JWT
         $this->validateKid($header);
 
         if (!isset($payload['iat']) && !isset($payload['exp'])) {
-            $payload['exp'] = ($this->timestamp ?: \time()) + $this->maxAge;
+            $payload['exp'] = ($this->timestamp ?: time()) + $this->maxAge;
         }
 
         $header    = $this->urlSafeEncode($header);
@@ -151,11 +174,11 @@ class JWT
      */
     public function decode(string $token, bool $verify = true): array
     {
-        if (\substr_count($token, '.') < 2) {
+        if (substr_count($token, '.') < 2) {
             throw new JWTException('Invalid token: Incomplete segments', static::ERROR_TOKEN_INVALID);
         }
 
-        $token = \explode('.', $token, 3);
+        $token = explode('.', $token, 3);
         if (!$verify) {
             return (array) $this->urlSafeDecode($token[1]);
         }
@@ -196,13 +219,13 @@ class JWT
     protected function sign(string $input): string
     {
         // HMAC SHA.
-        if (\substr($this->algo, 0, 2) === 'HS') {
-            return \hash_hmac($this->algos[$this->algo], $input, $this->key, true);
+        if (strpos($this->algo, 'HS') === 0) {
+            return hash_hmac($this->algos[$this->algo], $input, $this->key, true);
         }
 
         $this->validateKey();
 
-        \openssl_sign($input, $signature, $this->key, $this->algos[$this->algo]);
+        openssl_sign($input, $signature, $this->key, $this->algos[$this->algo]);
 
         return $signature;
     }
@@ -222,15 +245,15 @@ class JWT
         $algo = $this->algos[$this->algo];
 
         // HMAC SHA.
-        if (\substr($this->algo, 0, 2) === 'HS') {
-            return \hash_equals($this->urlSafeEncode(\hash_hmac($algo, $input, $this->key, true)), $signature);
+        if (strpos($this->algo, 'HS') === 0) {
+            return hash_equals($this->urlSafeEncode(hash_hmac($algo, $input, $this->key, true)), $signature);
         }
 
         $this->validateKey();
 
-        $pubKey = \openssl_pkey_get_details($this->key)['key'];
+        $pubKey = openssl_pkey_get_details($this->key)['key'];
 
-        return \openssl_verify($input, $this->urlSafeDecode($signature, false), $pubKey, $algo) === 1;
+        return openssl_verify($input, $this->urlSafeDecode($signature, false), $pubKey, $algo) === 1;
     }
 
     /**
@@ -246,12 +269,12 @@ class JWT
      */
     protected function urlSafeEncode($data): string
     {
-        if (\is_array($data)) {
-            $data = \json_encode($data, \JSON_UNESCAPED_SLASHES);
+        if (is_array($data)) {
+            $data = json_encode($data, JSON_UNESCAPED_SLASHES);
             $this->validateLastJson();
         }
 
-        return \rtrim(\strtr(\base64_encode($data), '+/', '-_'), '=');
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
 
     /**
@@ -260,17 +283,17 @@ class JWT
      * @param array|string $data
      * @param bool         $asJson Whether to parse as JSON (defaults to true).
      *
-     * @throws JWTException When JSON encode fails.
+     * @return array|stdClass|string
+     *@throws JWTException When JSON encode fails.
      *
-     * @return array|\stdClass|string
      */
     protected function urlSafeDecode($data, bool $asJson = true)
     {
         if (!$asJson) {
-            return \base64_decode(\strtr($data, '-_', '+/'));
+            return base64_decode(strtr($data, '-_', '+/'));
         }
 
-        $data = \json_decode(\base64_decode(\strtr($data, '-_', '+/')));
+        $data = json_decode(base64_decode(strtr($data, '-_', '+/')), false);
         $this->validateLastJson();
 
         return $data;
