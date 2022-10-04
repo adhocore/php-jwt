@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Ahc\Jwt;
 
-use stdClass;
 use function array_merge;
 use function base64_decode;
 use function base64_encode;
@@ -31,6 +30,7 @@ use function rtrim;
 use function strtr;
 use function substr_count;
 use function time;
+use stdClass;
 use const JSON_UNESCAPED_SLASHES;
 use const OPENSSL_ALGO_SHA256;
 use const OPENSSL_ALGO_SHA384;
