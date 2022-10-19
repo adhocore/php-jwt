@@ -3,7 +3,7 @@
 If you are new to JWT or want to refresh your familiarity with it, please check [jwt.io](https://jwt.io/)
 
 [![Latest Version](https://img.shields.io/github/release/adhocore/php-jwt.svg?style=flat-square)](https://github.com/adhocore/php-jwt/releases)
-[![Travis Build](https://img.shields.io/travis/adhocore/php-jwt/master.svg?style=flat-square)](https://travis-ci.org/adhocore/php-jwt?branch=master)
+[![Build](https://github.com/adhocore/php-jwt/actions/workflows/build.yml/badge.svg)](https://github.com/adhocore/php-jwt/actions/workflows/build.yml)
 [![Scrutinizer CI](https://img.shields.io/scrutinizer/g/adhocore/php-jwt.svg?style=flat-square)](https://scrutinizer-ci.com/g/adhocore/php-jwt/?branch=master)
 [![Codecov branch](https://img.shields.io/codecov/c/github/adhocore/php-jwt/master.svg?style=flat-square)](https://codecov.io/gh/adhocore/php-jwt)
 [![StyleCI](https://styleci.io/repos/88168137/shield)](https://styleci.io/repos/88168137)
