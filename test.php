@@ -25,13 +25,30 @@ function run_test()
     ini_set('assert.exception', 1);
 
     foreach (data1() as $d) {
-        $d[]                                                = [];
+        $d[] = [];
+
         list($key, $algo, $age, $leeway, $payload, $header) = $d;
-        $jwt                                                = new JWT($key, $algo, $age, $leeway);
-        $token                                              = $jwt->encode($payload, $header);
+
+        // HS
+        $jwt   = new JWT($key, $algo, $age, $leeway);
+        $token = $jwt->encode($payload, $header);
         assert(is_string($token));
 
         $decoded = $jwt->decode($token);
+        assert(is_array($decoded));
+        if (!isset($payload['exp'])) {
+            unset($decoded['exp']);
+        }
+        assert($payload === $decoded);
+
+        // RS
+        $key   = __DIR__ . '/tests/stubs/priv.key';
+        $jwt   = new JWT($key, str_replace('HS', 'RS', $algo), $age, $leeway);
+        $token = $jwt->encode($payload, $header);
+        assert(is_string($token));
+
+        $decoded = $jwt->decode($token);
+        assert(is_array($decoded));
         if (!isset($payload['exp'])) {
             unset($decoded['exp']);
         }
@@ -59,7 +76,8 @@ function run_test()
 
     foreach (data3() as $d) {
         list($method, $key, $arg) = $d;
-        $jwt                      = new JWT($key, 'RS256');
+
+        $jwt = new JWT($key, 'RS256');
 
         try {
             $jwt->{$method}($arg);
@@ -67,6 +85,21 @@ function run_test()
         } catch (Exception $e) {
             assert($e instanceof JWTException);
         }
+    }
+
+    $jwt = (new JWT('dummy', 'HS256'))->registerKeys(['key1' => 'secret1', 'key2' => 'secret2']);
+
+    $token = $jwt->encode($payload = ['a' => 1, 'exp' => time() + 1000], ['kid' => 'key2']);
+
+    assert($payload === $jwt->decode($token));
+    assert($payload === $jwt->decode($token, false));
+
+    $jwt = new JWT('very^secre7');
+    try {
+        $jwt->encode([base64_decode('mF6u28o4K2cD3w==')]);
+        assert(false);
+    } catch (Exception $e) {
+        assert($e instanceof JWTException);
     }
 
     return true;
