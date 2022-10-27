@@ -95,6 +95,7 @@ function run_test()
     assert($payload === $jwt->decode($token, false));
 
     $jwt = new JWT('very^secre7');
+
     try {
         $jwt->encode([base64_decode('mF6u28o4K2cD3w==')]);
         assert(false);
