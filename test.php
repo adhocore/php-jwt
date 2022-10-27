@@ -1,8 +1,16 @@
 <?php
 
+/*
+ * This file is part of the PHP-JWT package.
+ *
+ * (c) Jitendra Adhikari <jiten.adhikary@gmail.com>
+ *     <https://github.com/adhocore>
+ *
+ * Licensed under MIT license.
+ */
+
 use Ahc\Jwt\JWT;
 use Ahc\Jwt\JWTException;
-use Ahc\Jwt\ValidatesJWT;
 
 if (run_test()) {
     echo 'PHP version: ', PHP_VERSION, ", Tests passed\n";
@@ -17,10 +25,10 @@ function run_test()
     ini_set('assert.exception', 1);
 
     foreach (data1() as $d) {
-        $d[] = [];
+        $d[]                                                = [];
         list($key, $algo, $age, $leeway, $payload, $header) = $d;
-        $jwt   = new JWT($key, $algo, $age, $leeway);
-        $token = $jwt->encode($payload, $header);
+        $jwt                                                = new JWT($key, $algo, $age, $leeway);
+        $token                                              = $jwt->encode($payload, $header);
         assert(is_string($token));
 
         $decoded = $jwt->decode($token);
@@ -51,7 +59,7 @@ function run_test()
 
     foreach (data3() as $d) {
         list($method, $key, $arg) = $d;
-        $jwt = new JWT($key, 'RS256');
+        $jwt                      = new JWT($key, 'RS256');
 
         try {
             $jwt->{$method}($arg);
