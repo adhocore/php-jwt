@@ -15,19 +15,19 @@ If you are new to JWT or want to refresh your familiarity with it, please check 
 [![Donate 50](https://img.shields.io/badge/donate-paypal-blue.svg?style=flat-square&label=donate+50)](https://www.paypal.me/ji10/50usd) -->
 
 
-- Lightweight JSON Web Token (JWT) library for PHP7.
+- Lightweight JSON Web Token (JWT) library for PHP7, PHP8 and beyond.
 - Zero dependency (no vendor bloat).
 - If you still use PHP5.6, use version [0.1.2](https://github.com/adhocore/php-jwt/releases/tag/0.1.2)
 
 ## Installation
 ```sh
-# PHP7.0+
+# PHP7.x, PHP8.x
 composer require adhocore/jwt
 
-# PHP5.6
+# PHP5.6 (deprecated)
 composer require adhocore/jwt:0.1.2
 
-# For PHP5.4-5.5, use version 0.1.2 with a polyfill for https://php.net/hash_equals
+# For PHP5.4-5.5 (deprecated), use version 0.1.2 with a polyfill for https://php.net/hash_equals
 ```
 
 ## Features
@@ -142,11 +142,11 @@ The library is now marked at version `1.*.*` as being stable in functionality an
 #### Phalcon
 
 Check [adhocore/phalcon-ext](https://github.com/adhocore/phalcon-ext).
-
+<!--
 #### Laravel/Lumen
 
 Coming soon [laravel-jwt](https://github.com/adhocore/laravel-jwt).
-
+-->
 ### Consideration
 
 Be aware of some security related considerations as outlined [here](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/) which can be valid for any JWT implementations.
