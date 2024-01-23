@@ -13,6 +13,19 @@ declare(strict_types=1);
 
 namespace Ahc\Jwt;
 
+use OpenSSLAsymmetricKey;
+use OpenSSLCertificate;
+use OpenSSLCertificateSigningRequest;
+use function is_resource;
+use function is_string;
+use function json_last_error;
+use function json_last_error_msg;
+use function openssl_get_privatekey;
+use function substr;
+use function time;
+use const JSON_ERROR_NONE;
+use const PHP_VERSION_ID;
+
 /**
  * JSON Web Token (JWT) implementation in PHP7.
  *
@@ -82,7 +95,7 @@ trait ValidatesJWT
      */
     protected function validateTimestamps(array $payload)
     {
-        $timestamp = $this->timestamp ?: \time();
+        $timestamp = $this->timestamp ?: time();
         $checks    = [
             ['exp', $this->leeway /*          */ , static::ERROR_TOKEN_EXPIRED, 'Expired'],
             ['iat', $this->maxAge - $this->leeway, static::ERROR_TOKEN_EXPIRED, 'Expired'],
@@ -106,22 +119,22 @@ trait ValidatesJWT
      */
     protected function validateKey()
     {
-        if (\is_string($key = $this->key)) {
-            if (\substr($key, 0, 7) !== 'file://') {
+        if (is_string($key = $this->key)) {
+            if (strpos($key, 'file://') !== 0) {
                 $key = 'file://' . $key;
             }
 
-            $this->key = \openssl_get_privatekey($key, $this->passphrase ?: '');
+            $this->key = openssl_get_privatekey($key, $this->passphrase ?: '');
         }
 
-        if (\PHP_VERSION_ID < 80000 && !\is_resource($this->key)) {
+        if (PHP_VERSION_ID < 80000 && !is_resource($this->key)) {
             throw new JWTException('Invalid key: Should be resource of private key', static::ERROR_KEY_INVALID);
         }
 
-        if (\PHP_VERSION_ID > 80000 && !(
-            $this->key instanceof \OpenSSLAsymmetricKey
-            || $this->key instanceof \OpenSSLCertificate
-            || $this->key instanceof \OpenSSLCertificateSigningRequest
+        if (PHP_VERSION_ID > 80000 && !(
+            $this->key instanceof OpenSSLAsymmetricKey
+            || $this->key instanceof OpenSSLCertificate
+            || $this->key instanceof OpenSSLCertificateSigningRequest
         )) {
             throw new JWTException('Invalid key: Should be resource of private key', static::ERROR_KEY_INVALID);
         }
@@ -132,10 +145,10 @@ trait ValidatesJWT
      */
     protected function validateLastJson()
     {
-        if (\JSON_ERROR_NONE === \json_last_error()) {
+        if (JSON_ERROR_NONE === json_last_error()) {
             return;
         }
 
-        throw new JWTException('JSON failed: ' . \json_last_error_msg(), static::ERROR_JSON_FAILED);
+        throw new JWTException('JSON failed: ' . json_last_error_msg(), static::ERROR_JSON_FAILED);
     }
 }
