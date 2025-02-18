@@ -11,7 +11,9 @@
 
 namespace Ahc\Jwt;
 
-class JWTException extends \InvalidArgumentException
+use InvalidArgumentException;
+
+class JWTException extends InvalidArgumentException
 {
     // ;)
 }
