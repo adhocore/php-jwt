@@ -84,7 +84,7 @@ class JWT
         string $algo = 'HS256',
         int $maxAge = 3600,
         int $leeway = 0,
-        string $pass = null
+        ?string $pass = null
     ) {
         $this->validateConfig($key, $algo, $maxAge, $leeway);
 
@@ -179,7 +179,7 @@ class JWT
      *
      * @param int|null $timestamp
      */
-    public function setTestTimestamp(int $timestamp = null): self
+    public function setTestTimestamp(?int $timestamp = null): self
     {
         $this->timestamp = $timestamp;
 
