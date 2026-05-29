@@ -222,4 +222,18 @@ class JWTTest extends \PHPUnit\Framework\TestCase
             ['decode', __FILE__, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJuYmYiOjE0OTIwODkxODksImV4cCI6MTQ5MjA4OTE4OX0.fakesignature'],
         ];
     }
+    
+    public function test_custom_typ()
+    {
+        $jwt   = new JWT('KEY', 'HS256', 10, 0);
+        $token = $jwt->encode('PAYLOAD', [
+            'typ' => 'at+jwt'
+        ]);
+
+        $this->assertIsString($token);
+        $decoded = $jwt->decode($token);
+        $this->assertIsArray($decoded);
+
+        $this->assertSame('at+jwt', $decoded['typ']);
+    }
 }
