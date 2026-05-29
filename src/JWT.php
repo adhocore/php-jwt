@@ -116,8 +116,6 @@ class JWT
 
     /**
      * Encode payload as JWT token.
-     * 
-     * 'alg' in header is 
      *
      * @param array $payload
      * @param array $header  Extra header (if any) to append.
