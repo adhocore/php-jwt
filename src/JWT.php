@@ -116,6 +116,8 @@ class JWT
 
     /**
      * Encode payload as JWT token.
+     * 
+     * 'alg' in header is 
      *
      * @param array $payload
      * @param array $header  Extra header (if any) to append.
@@ -124,7 +126,10 @@ class JWT
      */
     public function encode(array $payload, array $header = []): string
     {
-        $header = ['typ' => 'JWT', 'alg' => $this->algo] + $header;
+        $header = $header + ['typ' => 'JWT'];
+
+        // `alg` is enforced; caller cannot override
+        $header['alg'] = $this->algo;
 
         $this->validateKid($header);
 
