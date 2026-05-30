@@ -124,7 +124,10 @@ class JWT
      */
     public function encode(array $payload, array $header = []): string
     {
-        $header = ['typ' => 'JWT', 'alg' => $this->algo] + $header;
+        $header = $header + ['typ' => 'JWT'];
+
+        // `alg` is enforced; caller cannot override
+        $header['alg'] = $this->algo;
 
         $this->validateKid($header);
 
