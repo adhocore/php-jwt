@@ -227,15 +227,15 @@ class JWTTest extends \PHPUnit\Framework\TestCase
     {
         $jwt   = new JWT('KEY', 'HS256', 10, 0);
         $token = $jwt->encode(['uid' => 1], [
-            'typ' => 'at+jwt'
+            'typ' => 'at+jwt',
         ]);
 
         $this->assertIsString($token);
 
-        $segments = \explode('.', $token);
+        $segments      = \explode('.', $token);
         $headerSegment = $segments[0];
-        $headerJson = \base64_decode(\strtr($headerSegment, '-_', '+/'));
-        $header = \json_decode($headerJson, true);
+        $headerJson    = \base64_decode(\strtr($headerSegment, '-_', '+/'));
+        $header        = \json_decode($headerJson, true);
 
         $this->assertSame('at+jwt', $header['typ']);
     }
