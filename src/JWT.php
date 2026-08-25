@@ -48,7 +48,7 @@ class JWT
         'RS512' => \OPENSSL_ALGO_SHA512,
     ];
 
-    /** @var string|resource The signature key. */
+    /** @var string|resource|\OpenSSLAsymmetricKey|\OpenSSLCertificate|\OpenSSLCertificateSigningRequest The signature key. */
     protected $key;
 
     /** @var array The list of supported keys with id. */
@@ -72,7 +72,11 @@ class JWT
     /**
      * Constructor.
      *
-     * @param string|resource $key    The signature key. For RS* it should be file path or resource of private key.
+     * @param string|resource|\OpenSSLAsymmetricKey|\OpenSSLCertificate|\OpenSSLCertificateSigningRequest $key
+     *                                The signature key. For HS* it is the shared secret string. For RS* it should be
+     *                                the parsed private key (\OpenSSLAsymmetricKey on PHP 8+, resource on PHP 7) or a
+     *                                file path to it — a string is always treated as a file path, so passing PEM
+     *                                content directly is not supported.
      * @param string          $algo   The algorithm to sign/verify the token.
      * @param int             $maxAge The TTL of token to be used to determine expiry if `iat` claim is present.
      *                                This is also used to provide default `exp` claim in case it is missing.

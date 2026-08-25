@@ -102,7 +102,8 @@ trait ValidatesJWT
     }
 
     /**
-     * Throw up if key is not resource or file path to private key.
+     * Throw up if key is not a private key instance (resource on PHP 7, \OpenSSLAsymmetricKey
+     * etc on PHP 8+) or a file path to one. A string is treated as a file path, never as PEM content.
      */
     protected function validateKey()
     {
