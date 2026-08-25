@@ -72,16 +72,16 @@ class JWT
     /**
      * Constructor.
      *
-     * @param string|resource|\OpenSSLAsymmetricKey|\OpenSSLCertificate|\OpenSSLCertificateSigningRequest $key
-     *                                The signature key. For HS* it is the shared secret string. For RS* it should be
-     *                                the parsed private key (\OpenSSLAsymmetricKey on PHP 8+, resource on PHP 7) or a
-     *                                file path to it — a string is always treated as a file path, so passing PEM
-     *                                content directly is not supported.
-     * @param string          $algo   The algorithm to sign/verify the token.
-     * @param int             $maxAge The TTL of token to be used to determine expiry if `iat` claim is present.
-     *                                This is also used to provide default `exp` claim in case it is missing.
-     * @param int             $leeway Leeway for clock skew. Shouldnot be more than 2 minutes (120s).
-     * @param string          $pass   The passphrase (only for RS* algos).
+     * @param string|resource|\OpenSSLAsymmetricKey $key    The signature key. For HS* it is the shared secret string.
+     *                                                      For RS* it should be the parsed private key
+     *                                                      (\OpenSSLAsymmetricKey on PHP 8+, resource on PHP 7) or a
+     *                                                      file path to it. A string is always treated as a file
+     *                                                      path, never as PEM content.
+     * @param string                                $algo   The algorithm to sign/verify the token.
+     * @param int                                   $maxAge The TTL of token to be used to determine expiry if `iat` claim is present.
+     *                                                      This is also used to provide default `exp` claim in case it is missing.
+     * @param int                                   $leeway Leeway for clock skew. Shouldnot be more than 2 minutes (120s).
+     * @param string                                $pass   The passphrase (only for RS* algos).
      */
     public function __construct(
         $key,
